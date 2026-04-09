@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<!--
+  SerialNet Debug Studio — 单页入口
+  Author: Allen Liao
+  Date: 2026-04-09
+-->
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <link rel="stylesheet" href="/style.css?v=23" />
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+</head>
+<body>
+  <aside class="app-meta-bar panel" data-i18n-aria="footerAppMetaAria">
+    <div class="app-meta-row">
+      <span class="app-meta-version">
+        <span data-i18n="footerVersionLabel"></span>
+        <span id="appVersion" class="app-version-num"></span>
+      </span>
+      <span class="app-meta-sep" aria-hidden="true">·</span>
+      <span class="app-meta-author" data-i18n="footerAuthorAbout"></span>
+    </div>
+  </aside>
+
+  <header class="panel conn-panel">
+    <div class="row">
+      <label for="mode" data-i18n="lblMode"></label>
+      <select id="mode">
+        <option value="serial" data-i18n="modeSerial"></option>
+        <option value="tcp" selected data-i18n="modeTcp"></option>
+        <option value="udp" data-i18n="modeUdp"></option>
+      </select>
+      <span class="status-label" data-i18n="lblStatus"></span>
+      <span id="statusText" class="status-badge disconnected"></span>
+      <span id="connWatchLabel" class="conn-watch-label" data-i18n-title="connWatchTitle"></span>
+      <button id="btnConnect" type="button" data-i18n="btnConnect"></button>
+      <button id="btnDisconnect" type="button" class="secondary" data-i18n="btnDisconnect"></button>
+      <div class="conn-lang-slot">
+        <label for="uiLang" data-i18n="lblUiLang"></label>
+        <select id="uiLang" data-i18n-aria="uiLangAria"></select>
+      </div>
+    </div>
+    <div id="cfgSerial" class="cfg-block" hidden>
+      <div class="row">
+        <label data-i18n="lblPort"></label>
+        <select id="serialPort"></select>
+        <button id="btnRefreshPorts" type="button" class="small" data-i18n="btnRefreshPorts"></button>
+        <label data-i18n="lblBaudrate"></label>
+        <input id="serialBaud" type="number" value="115200" />
+        <label data-i18n="lblDataBits"></label>
+        <select id="serialDataBits">
+          <option>5</option>
+          <option>6</option>
+          <option>7</option>
+          <option selected>8</option>
+        </select>
+        <label data-i18n="lblParity"></label>
+        <select id="serialParity">
+          <option value="none" selected data-i18n="parityNone"></option>
+          <option value="even" data-i18n="parityEven"></option>
+          <option value="odd" data-i18n="parityOdd"></option>
+        </select>
+        <label data-i18n="lblStopBits"></label>
+        <select id="serialStopBits">
+          <option selected value="1">1</option>
+          <option value="1.5">1.5</option>
+          <option value="2">2</option>
+        </select>
+        <label data-i18n="lblReadTimeout"></label>
+        <input id="serialTimeout" type="number" step="0.05" value="0.2" />
+      </div>
+    </div>
+    <div id="cfgTcp" class="cfg-block">
+      <div class="row tcp-row-main">
+        <label data-i18n="lblHostIp"></label>
+        <input id="tcpHost" type="text" value="192.168.1.100" autocomplete="off" />
+        <label data-i18n="lblPort"></label>
+        <input id="tcpPort" type="number" value="5000" autocomplete="off" />
+        <span class="tcp-recent-label" data-i18n="tcpRecent"></span>
+        <div id="tcpRecentChips" class="tcp-recent-chips" data-i18n-aria="tcpRecentAria"></div>
+      </div>
+    </div>
+    <div id="cfgUdp" class="cfg-block" hidden>
+      <div class="row">
+        <label data-i18n="lblRemoteHost"></label>
+        <input id="udpRemoteHost" type="text" value="192.168.1.100" />
+        <label data-i18n="lblRemotePort"></label>
+        <input id="udpRemotePort" type="number" value="5001" />
+        <label data-i18n="lblLocalListenPort"></label>
+        <input id="udpLocalPort" type="number" value="5001" />
+        <label class="check-label"><input type="checkbox" id="udpListen" /> <span data-i18n="udpListen"></span></label>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="panel log-panel">
+      <div class="panel-head">
+        <div class="panel-head-title">
+          <h2 data-i18n="panelLog"></h2>
+          <span id="logLimitBadge" class="limit-badge" data-i18n-title="titleLogLimit"></span>
+        </div>
+        <button id="btnClearLog" type="button" class="small secondary" data-i18n="btnClearLog"></button>
+      </div>
+      <div class="log-body">
+        <pre id="logView" class="log-view"></pre>
+      </div>
+    </section>
+    <section class="panel chart-panel">
+      <div class="panel-head">
+        <div class="panel-head-title">
+          <h2 data-i18n="panelChart"></h2>
+          <span id="chartLimitBadge" class="limit-badge" data-i18n-title="titleChartLimit"></span>
+        </div>
+        <div class="panel-head-actions">
+          <button id="btnChartStartRead" type="button" class="small secondary" data-i18n="btnChartStartRead"></button>
+          <button id="btnChartPause" type="button" class="small secondary" data-i18n="btnChartPause"></button>
+          <button id="btnCopyChartCsv" type="button" class="small secondary" data-i18n="btnCopyChartCsv"></button>
+          <button id="btnExportChartCsv" type="button" class="small secondary" data-i18n="btnExportChartCsv"></button>
+          <button id="btnChartResetZoom" type="button" class="small secondary" data-i18n-title="titleChartResetZoom" data-i18n="btnChartResetZoom"></button>
+          <button id="btnClearPlot" type="button" class="small secondary" data-i18n="btnClearPlot"></button>
+        </div>
+      </div>
+      <div id="chart" class="chart-box"></div>
+    </section>
+  </main>
+
+  <footer class="panel cmd-panel">
+    <div id="cmdHistPop" class="cmd-hist-pop" hidden>
+      <div id="cmdHistHead" class="cmd-hist-head" data-i18n="cmdHistHead"></div>
+      <div id="cmdHistList" class="cmd-hist-list"></div>
+      <p id="cmdHistEmpty" class="cmd-hist-empty" hidden data-i18n="cmdHistEmpty"></p>
+    </div>
+    <div class="row send-toolbar">
+      <label class="send-lbl" for="sendFormat" data-i18n="lblSendFormat" data-i18n-title="titleLblSendFormat"></label>
+      <select id="sendFormat" class="send-select" data-i18n-aria="ariaSendFormat">
+        <option value="text" data-i18n="optSendText"></option>
+        <option value="hex" data-i18n="optSendHex"></option>
+      </select>
+      <label class="send-lbl" for="sendLineEnding" data-i18n="lblLineEnding" data-i18n-title="titleLblLineEnding"></label>
+      <select id="sendLineEnding" class="send-select" data-i18n-aria="ariaLineEnding">
+        <option value="none" data-i18n="lineEndNone"></option>
+        <option value="lf" selected data-i18n="lineEndLf"></option>
+        <option value="cr" data-i18n="lineEndCr"></option>
+        <option value="crlf" data-i18n="lineEndCrlf"></option>
+      </select>
+      <label class="send-lbl" for="sendChecksum" data-i18n="lblChecksum" data-i18n-title="titleLblChecksum"></label>
+      <select id="sendChecksum" class="send-select send-select-wide" data-i18n-aria="ariaChecksum">
+        <option value="none" data-i18n="chkNone"></option>
+        <option value="xor8" data-i18n="chkXor8"></option>
+        <option value="crc8" data-i18n="chkCrc8"></option>
+        <option value="crc16" data-i18n="chkCrc16"></option>
+        <option value="crc16_ccitt" data-i18n="chkCrc16Ccitt"></option>
+        <option value="crc16_modbus" data-i18n="chkCrc16Modbus"></option>
+        <option value="crc32" data-i18n="chkCrc32"></option>
+        <option value="mod256" data-i18n="chkMod256"></option>
+        <option value="adler32" data-i18n="chkAdler32"></option>
+        <option value="fletcher16" data-i18n="chkFletcher16"></option>
+      </select>
+      <label class="check-label send-echo-label" data-i18n-title="titleTxEcho">
+        <input type="checkbox" id="txEchoLog" checked />
+        <span data-i18n="chkTxEcho"></span>
+      </label>
+    </div>
+    <div class="row">
+      <input id="cmdInput" type="text" data-i18n-placeholder="cmdPlaceholder" autocomplete="off" />
+      <button id="btnSend" type="button" data-i18n="btnSend"></button>
+      <button id="btnCmdHist" type="button" aria-expanded="false" aria-controls="cmdHistPop" data-i18n-title="btnCmdHistTitle" data-i18n="btnCmdHist"></button>
+      <button id="btnClearCmdHist" type="button" class="warning" data-i18n-title="btnClearCmdHistTitle" data-i18n="btnClearCmdHist"></button>
+    </div>
+  </footer>
+
+  <script src="/i18n.js?v=8"></script>
+  <script src="/app.js?v=32"></script>
+</body>
+</html>

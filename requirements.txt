@@ -1,0 +1,8 @@
+# SerialNet Debug Studio — Python dependencies
+# Author: Allen Liao
+# Date: 2026-04-09
+
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pyserial>=3.5
+websockets>=12.0
