@@ -74,6 +74,36 @@ The table below shows the most representative UI views in a compact GitHub-frien
 | TCP | **Host/Port** remembered locally; **last 3** successful connects as quick chips. |
 | Link state | **WebSocket** plus periodic **GET `/api/status`** keep UI in sync so a broken WS alone does not show “connected” incorrectly. |
 
+## Roadmap
+
+The currently implemented protocols in this repository are still **Serial (COM) / TCP / UDP**. The roadmap below highlights the likely next steps so readers can quickly see what already exists and what may be added later.
+
+### Supported today
+
+- **Serial (COM)**: local serial connection, logging, sending, and parsing
+- **TCP client**: device bring-up, message sending, logs, and live charts
+- **UDP**: send, optional local listen, logging, and parsed data flow
+- **Unified UI experience**: logs, charts, send history, HEX, line endings, checksum options, and multilingual UI
+
+### Planned
+
+- **MQTT**: connect to a broker, publish/subscribe to topics, inspect message logs, and feed numeric payloads into live charts
+- **Bluetooth (BLE first)**: likely starting with **Bluetooth Low Energy (BLE)**, with classic Bluetooth serial-style scenarios considered later
+- **More protocol adapters**: extending beyond the current TCP / UDP set with transports better suited to device messaging workflows
+- **Further transport unification**: reusing the same logging, sending, history, checksum, parsing, and charting experience across protocols
+
+### Ideas
+
+- **Protocol plug-in model**: a cleaner extension point for adding future transports
+- **More chart types**: exploring bar charts, area charts, gauges, status cards, and other visualizations beyond the current line chart for different data patterns
+- **Extended chart capabilities**: more flexible series mapping, chart configuration, field grouping, and multi-panel layouts for different protocols or data models
+- **Custom JavaScript parsers**: allowing user-defined JavaScript scripts to parse device-specific protocols and turn raw payloads into structured fields, log text, or chart data
+- **Script-based protocol adapters**: defining a stable input/output contract for user scripts so new device protocols can be integrated quickly without changing the built-in backend parser every time
+- **More device-debugging workflows**: such as richer session panels, message templates, and protocol presets
+- **Cross-protocol consistency**: keeping Serial, TCP, UDP, MQTT, Bluetooth, and future transports as similar as practical in daily use
+
+> Note: items under `Planned` and `Ideas` are roadmap directions, not currently implemented features.
+
 ## Tech stack
 
 - Python **3.10+** (3.11+ recommended)

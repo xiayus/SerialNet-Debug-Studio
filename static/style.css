@@ -159,7 +159,22 @@ body {
 }
 
 .app-meta-author {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 4px;
+  justify-content: center;
   text-align: center;
+}
+
+.app-meta-repo-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.app-meta-repo-link:hover {
+  text-decoration: underline;
 }
 
 .cfg-block {

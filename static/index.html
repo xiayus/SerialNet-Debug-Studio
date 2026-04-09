@@ -9,7 +9,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title></title>
-  <link rel="stylesheet" href="/style.css?v=23" />
+  <link rel="stylesheet" href="/style.css?v=24" />
   <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 </head>
 <body>
@@ -20,7 +20,18 @@
         <span id="appVersion" class="app-version-num"></span>
       </span>
       <span class="app-meta-sep" aria-hidden="true">·</span>
-      <span class="app-meta-author" data-i18n="footerAuthorAbout"></span>
+      <span class="app-meta-author">
+        <span data-i18n="footerAuthorAbout"></span>
+        <span class="app-meta-sep" aria-hidden="true">·</span>
+        <a
+          class="app-meta-repo-link"
+          href="https://github.com/xiayus/SerialNet-Debug-Studio"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-i18n="footerRepoLink"
+          data-i18n-title="footerRepoLinkTitle"
+          >GitHub</a>
+      </span>
     </div>
   </aside>
 
@@ -172,7 +183,7 @@
     </div>
   </footer>
 
-  <script src="/i18n.js?v=8"></script>
+  <script src="/i18n.js?v=9"></script>
   <script src="/app.js?v=32"></script>
 </body>
 </html>
