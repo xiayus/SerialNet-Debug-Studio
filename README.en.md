@@ -52,8 +52,6 @@ The diagram below summarizes the full flow: **Serial / TCP / UDP** devices on th
 
 ### UI screenshots
 
-The table below shows the most representative UI views in a compact GitHub-friendly layout.
-
 | Serial connection and live chart | TCP debugging view |
 |---|---|
 | In serial mode, the left side shows live logs while the right side renders dynamic multi-series charts from parsed channels, which is useful for sensors, ADC values, and other embedded telemetry.<br><br>![Serial monitor screenshot with COM connection, live logs, and multi-channel chart](images/串口连接运行截图.png) | In TCP client mode, you can connect to a target host and port, inspect logs, send commands, and watch the chart in the same browser UI.<br><br>![TCP debugging tool screenshot with TCP client connection, live logs, and chart](images/TCP接口链接运行截图.png) |
